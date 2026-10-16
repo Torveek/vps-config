@@ -8,7 +8,9 @@ Powered by Charm's [gum](https://github.com/charmbracelet/gum) for terminal UI w
 
 ## Features
 
-- **Charm `gum` UI**: Bootstrapped first automatically, providing an interactive checkbox menu (`[Space]` to toggle components, `[Enter]` to confirm).
+- **Charm `gum` UI & System Upgrade**:
+  - Bootstraps Charm's `gum` automatically for interactive terminal menus (`[Space]` to toggle components, `[Enter]` to confirm).
+  - Immediately runs `apt update && apt upgrade` as the first step to ensure all base packages and security patches are current before configuring components.
 - **Sudo User Setup**: Prompted username and masked password prompt with automatic `sudo` group configuration.
 - **SSH Hardening**:
   - Custom SSH Port (default: `2222`).
@@ -22,9 +24,13 @@ Powered by Charm's [gum](https://github.com/charmbracelet/gum) for terminal UI w
   - Deploys `.zshrc`, `.zsh_aliases`, `.zshenv`, `.zprofile`, and `starship.toml`.
   - Sets Zsh as the default shell for the target user.
 - **Neovim & LazyVim**:
-  - Installs modern **Neovim (v0.10+)** binary (overcoming Ubuntu 22.04's outdated apt package).
-  - Installs prerequisites: `ripgrep`, `fd-find` (symlinked to `fd`), `build-essential`, `git`, `curl`.
+  - Dynamically installs the **latest stable Neovim** binary (ensuring modern **Neovim >= 0.11.2** compatibility required by LazyVim, overcoming outdated Ubuntu apt packages).
+  - Automatically removes conflicting or outdated distro packages and links into `/usr/local/bin` and `/usr/bin`.
+  - Installs prerequisites: `ripgrep`, `fd-find` (symlinked to `fd`), `build-essential`, `git`, `curl`, `fzf`.
   - Deploys full **LazyVim** configuration.
+- **Fresh Text Editor**:
+  - Installs [Fresh](https://github.com/sinelaw/fresh), a fast, lightweight terminal text editor with built-in LSP, syntax highlighting, and mouse support.
+  - Installs official pre-built package into `/usr/bin/fresh` with universal fallbacks and convenient aliases.
 - **Docker & Docker Compose**:
   - Configures official Docker CE repository and GPG keyring for Ubuntu 22.04/24.04.
   - Installs Docker Engine, CLI, Containerd, Buildx, and Docker Compose plugin.
@@ -76,7 +82,8 @@ vps-config/
 │   ├── user.sh                 # User creation & sudo group setup
 │   ├── ssh.sh                  # SSH port change, key injection & hardening
 │   ├── zsh.sh                  # Zsh, Oh My Zsh, plugins, Starship & shell change
-│   ├── neovim.sh               # Modern Neovim v0.10+ install & LazyVim config
+│   ├── neovim.sh               # Modern Neovim (latest stable) & LazyVim config
+│   ├── fresh.sh                # Fresh modern terminal text editor
 │   ├── docker.sh               # Docker Engine & Docker Compose plugin
 │   ├── lazydocker.sh           # Lazydocker installation
 │   ├── caddy.sh                # Caddy web server & reverse proxy

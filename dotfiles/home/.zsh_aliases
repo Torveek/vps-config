@@ -103,6 +103,7 @@ fi
 
 command -v pico >/dev/null 2>&1 && alias spico='sudo pico'
 command -v nano >/dev/null 2>&1 && alias snano='sudo nano'
+command -v fresh >/dev/null 2>&1 && alias edit='fresh'
 
 sedit() {
     sudo "${SUDO_EDITOR:-${EDITOR:-vi}}" "$@"

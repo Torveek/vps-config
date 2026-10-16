@@ -107,6 +107,20 @@ bootstrap_gum() {
   fi
 }
 
+update_system() {
+  ui_step "System Update & Upgrade (apt update && apt upgrade)"
+
+  ui_info "Updating APT package index..."
+  export DEBIAN_FRONTEND=noninteractive
+  export NEEDRESTART_MODE=a
+  apt-get update -y
+
+  ui_info "Upgrading installed system packages..."
+  apt-get upgrade -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold"
+
+  ui_success "System packages updated and upgraded successfully."
+}
+
 detect_ipv4() {
   local ip
   ip="$(hostname -I 2>/dev/null | awk '{print $1}')"

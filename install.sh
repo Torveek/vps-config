@@ -22,6 +22,8 @@ source "${SCRIPT_DIR}/lib/zsh.sh"
 # shellcheck disable=SC1091
 source "${SCRIPT_DIR}/lib/neovim.sh"
 # shellcheck disable=SC1091
+source "${SCRIPT_DIR}/lib/fresh.sh"
+# shellcheck disable=SC1091
 source "${SCRIPT_DIR}/lib/docker.sh"
 # shellcheck disable=SC1091
 source "${SCRIPT_DIR}/lib/lazydocker.sh"
@@ -42,21 +44,26 @@ bootstrap_gum
 # Header
 ui_header "Ubuntu VPS Server Installer" "Ubuntu ${UBUNTU_VERSION:-unknown} (${UBUNTU_CODENAME:-unknown}) - ${ARCH}"
 
+# Most first step after gum install: Update and upgrade system packages
+update_system
+
 # Checkbox choices definition
 OPT_USER="1. Create New Sudo User"
 OPT_SSH="2. Configure SSH Hardening (Port, SSH Keys, Disable Root & Passwords)"
 OPT_ZSH="3. Install Zsh + Oh My Zsh (Plugins, Starship Prompt, Dotfiles & Shell)"
-OPT_NVIM="4. Install Neovim & LazyVim Configuration"
-OPT_DOCKER="5. Install Docker Engine & Docker Compose"
-OPT_LAZYDOCKER="6. Install Lazydocker"
-OPT_CADDY="7. Install Caddy Proxy Server"
-OPT_FIREWALL="8. Configure UFW Firewall & Disable Ping (ICMP)"
+OPT_NVIM="4. Install Neovim (Latest Stable) & LazyVim Configuration"
+OPT_FRESH="5. Install Fresh Modern Terminal Text Editor"
+OPT_DOCKER="6. Install Docker Engine & Docker Compose"
+OPT_LAZYDOCKER="7. Install Lazydocker"
+OPT_CADDY="8. Install Caddy Proxy Server"
+OPT_FIREWALL="9. Configure UFW Firewall & Disable Ping (ICMP)"
 
 ALL_OPTIONS=(
   "$OPT_USER"
   "$OPT_SSH"
   "$OPT_ZSH"
   "$OPT_NVIM"
+  "$OPT_FRESH"
   "$OPT_DOCKER"
   "$OPT_LAZYDOCKER"
   "$OPT_CADDY"
@@ -120,22 +127,27 @@ if has_selected "$OPT_NVIM"; then
   setup_neovim
 fi
 
-# 5. Docker & Compose
+# 5. Fresh Text Editor
+if has_selected "$OPT_FRESH"; then
+  setup_fresh
+fi
+
+# 6. Docker & Compose
 if has_selected "$OPT_DOCKER"; then
   setup_docker
 fi
 
-# 6. Lazydocker
+# 7. Lazydocker
 if has_selected "$OPT_LAZYDOCKER"; then
   setup_lazydocker
 fi
 
-# 7. Caddy Web Server
+# 8. Caddy Web Server
 if has_selected "$OPT_CADDY"; then
   setup_caddy
 fi
 
-# 8. Firewall & Disable Ping
+# 9. Firewall & Disable Ping
 if has_selected "$OPT_FIREWALL"; then
   setup_firewall
 fi
